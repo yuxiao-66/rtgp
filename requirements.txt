@@ -1,0 +1,6 @@
+numpy>=1.23
+torch>=2.0
+scipy>=1.9
+tqdm>=4.60
+mat73>=0.60
+rpy2>=3.5
