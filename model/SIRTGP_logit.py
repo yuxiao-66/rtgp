@@ -16,22 +16,26 @@ pgdraw = importr('pgdraw')
 pgdraw_f = rpy2.robjects.r['pgdraw']
 truncnorm_r = importr("truncnorm")
 r_truncnorm = ro.r["rtruncnorm"]
-def get_basis(V, d,  poly_degree, a, b):
-    # if grids is None:
-    #     grids = GPfit.GP_generate_grids(d = d, num_grids = V, grids_lim = torch.array((-1,1)))
-    # #grids = grids.numpy()
-    # lamb = GPfit.GP_eigen_value(poly_degree=poly_degree, a=a, b=b, d=d)
-    
-    # # if os.path.exists(f"basis_a{a}_b{b}_deg{poly_degree}.dat"):
-    # #     Xmat = pd.read_csv(f"basis_a{a}_b{b}_deg{poly_degree}.dat", delimiter=' ', header=None)
-    # #     Xmat = Xmat.values
-    # # else:
-    # Xmat = GPfit.GP_eigen_funcs_fast(grids = grids, poly_degree=poly_degree, a=a, b=b)
-    Xmat = np.loadtxt(f"data/rtgp_basis_a{a}_b{b}_deg{poly_degree}_T{V}.dat", delimiter=' ')
-    lamb = np.loadtxt(f"data/rtgp_lambda_a{a}_b{b}_deg{poly_degree}_T{V}.dat", delimiter=' ')
+
+import os
+import pandas as pd
+
+def get_basis(V, d, poly_degree, a, b, grids=None):
+    if grids is None:
+        grids = GPfit.GP_generate_grids(d=d, num_grids=V, grids_lim=np.array((-1, 1)))
+    # grids = grids.numpy()
+    lamb = GPfit.GP_eigen_value(poly_degree=poly_degree, a=a, b=b, d=d)
+
+    if os.path.exists(f"basis_a{a}_b{b}_deg{poly_degree}.dat"):
+        Xmat = pd.read_csv(f"basis_a{a}_b{b}_deg{poly_degree}.dat", delimiter=' ', header=None)
+        Xmat = Xmat.values
+    else:
+        Xmat = GPfit.GP_eigen_funcs_fast(grids=grids, poly_degree=poly_degree, a=a, b=b)
+    # Xmat = np.loadtxt(f"data/rtgp_basis_a{a}_b{b}_deg{poly_degree}_T{V}.dat", delimiter=' ')
+    # lamb = np.loadtxt(f"data/rtgp_lambda_a{a}_b{b}_deg{poly_degree}_T{V}.dat", delimiter=' ')
 
     Xmat = torch.from_numpy(Xmat).float()
-    Xmat,_ = torch.linalg.qr(Xmat)
+    Xmat, _ = torch.linalg.qr(Xmat)
     lamb = torch.from_numpy(lamb).float().squeeze(-1)
 
     return Xmat, lamb
