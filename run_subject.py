@@ -20,7 +20,7 @@ def set_seed(seed=0):
 def get_args():
     parser = argparse.ArgumentParser(description="Run SIRTGP/SRTGP on EEG data")
 
-    parser.add_argument("--subject_id", type=int, default=1,
+    parser.add_argument("--subject_id", type=int, default=20,
                         help="Subject index (e.g., 1 for s01)")
     parser.add_argument("--poly", type=int, default=60,
                         help="Polynomial degree")
@@ -119,12 +119,13 @@ def main():
     # -------------------------------
     # Model variants
     # -------------------------------
-    methods = [
-        "SIRTGP_probit",
-        "SRTGP_probit",
-        "SIRTGP_logit",
-        "SRTGP_logit",
-    ]
+    methods = ["SIRTGP_probit"]
+    #methods = [
+    #    "SIRTGP_probit",
+    #    "SRTGP_probit",
+    #    "SIRTGP_logit",
+    #    "SRTGP_logit",
+    #]
 
     for method in methods:
 
