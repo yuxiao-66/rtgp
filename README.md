@@ -1,10 +1,8 @@
-# SIRTGP: Sparse Interaction Regularized Time-varying Gaussian Process
-
+# Sparse Bayesian time-varying classification with signal interactions via relaxed-thresholded Gaussian process prior (SI-RTGP) for P300 BCI speller
 ## Overview
 
-This repository implements the **Sparse Interaction Regularized
-Time-varying Gaussian Process (SIRTGP)** model for EEG-based
-Brain--Computer Interface (BCI) classification.
+This repository implements the **Sparse Bayesian time-varying classification with signal interactions via relaxed-thresholded Gaussian process prior (SI-RTGP)** model for EEG-based
+Brain-Computer Interface (BCI) classification.
 
 The package includes: - Probit and logit model variants - Interaction
 and non-interaction versions - Example script for running on
