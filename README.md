@@ -1,5 +1,5 @@
-`# SIRTGP: Sparse Interaction Regularized Time-varying Gaussian Process
-`
+# SIRTGP: Sparse Interaction Regularized Time-varying Gaussian Process
+
 ## Overview
 
 This repository implements the **Sparse Interaction Regularized
@@ -7,8 +7,8 @@ Time-varying Gaussian Process (SIRTGP)** model for EEG-based
 Brain--Computer Interface (BCI) classification.
 
 The package includes: - Probit and logit model variants - Interaction
-and non-interaction versions - Example script for reproducing results on
-subject S01
+and non-interaction versions - Example script for running on
+subject S20
 
 The example script is designed for demonstration and uses reduced MCMC
 iterations for faster execution.
@@ -29,7 +29,16 @@ pip install -r requirements.txt
 
 The example expects EEG data in:
 
-    data/real/s01.mat
+    data/real/s20.mat
+
+Due to GitHub file size limitations, the dataset is not included in this repository.  
+Please download the dataset from:
+
+https://doi.org/10.6084/m9.figshare.c.5769449
+
+After downloading, place the `.mat` file under:
+
+    data/real/
 
 The `.mat` file must be MATLAB v7.3 format and contain:
 
@@ -42,13 +51,14 @@ If your file is not v7.3, convert it or replace `mat73.loadmat` with
 ## 3. Run Example
 
 To run the model using the default configuration 
-(subject 1 and default hyperparameters), use:
+(subject 20 and default hyperparameters), use:
+
 ``` bash
 python run_subject.py
 ```
 Default settings:
 
-- subject_id = 1  
+- subject_id = 20  
 - poly = 60  
 - a = 0.01  
 - b = 100  
@@ -57,13 +67,19 @@ Default settings:
 - mcmc_sample = 100  
 - thin = 1  
 - seed = 0 
+- method = "SIRTGP_probit"
 
 You can override the default settings using command-line arguments.
 
 For example:
 ```bash
-python run_subject.py --subject_id 2 --poly 80 --mcmc_sample 200 --seed 1
+python run_subject.py --subject_id 1 --poly 80 --mcmc_sample 200 --seed 1 --method SRTGP_logit
 ```
+Available Model Variants
+-   SIRTGP_probit (with interaction)
+-   SRTGP_probit (without interaction)
+-   SIRTGP_logit (with interaction)
+-   SRTGP_logit (without interaction)
 
 Outputs will be saved to:
 
@@ -72,23 +88,21 @@ Outputs will be saved to:
 
 ------------------------------------------------------------------------
 
-# What run_s01.py Does
+# What run_subject.py Does
 
 The script performs the following steps:
 
-1.  Load subject S01 data.
-2.  Preprocess using `processRun2()` from `strange_funcs.py`.
-3.  Construct interaction features:
-    -   Computes pairwise channel correlations
-    -   Applies Fisher z-transform
-4.  Fit four model variants:
-    -   SIRTGP_probit (with interaction)
-    -   SRTGP_probit (without interaction)
-    -   SIRTGP_logit (with interaction)
-    -   SRTGP_logit (without interaction)
-5.  Predict on test data.
-6.  Evaluate character-level accuracy.
-7.  Save results as pickle files and accuracy text files.
+1. Load subject data (e.g., `s20.mat`).
+2. Preprocess the EEG signals using `processRun2()` from `strange_funcs.py`.
+3. Construct interaction features:
+   - Compute pairwise channel correlations
+   - Apply Fisher z-transform
+4. Fit the selected model variant (default: `SIRTGP_probit`).
+5. Predict on test data.
+6. Evaluate character-level accuracy.
+7. Save results:
+   - Posterior estimates and log-likelihood (as `.pickle`)
+   - Accuracy results (as `.txt`)
 
 ------------------------------------------------------------------------
 

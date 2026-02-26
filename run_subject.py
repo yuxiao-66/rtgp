@@ -33,6 +33,18 @@ def get_args():
     parser.add_argument("--mcmc_sample", type=int, default=100)
     parser.add_argument("--thin", type=int, default=1)
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument(
+        "--method",
+        type=str,
+        default="SIRTGP_probit",
+        choices=[
+            "SIRTGP_probit",
+            "SRTGP_probit",
+            "SIRTGP_logit",
+            "SRTGP_logit",
+        ],
+        help="Model variant to run"
+    )
 
     return parser.parse_args()
 
@@ -119,13 +131,7 @@ def main():
     # -------------------------------
     # Model variants
     # -------------------------------
-    methods = ["SIRTGP_probit"]
-    #methods = [
-    #    "SIRTGP_probit",
-    #    "SRTGP_probit",
-    #    "SIRTGP_logit",
-    #    "SRTGP_logit",
-    #]
+    methods = [args.method]
 
     for method in methods:
 
